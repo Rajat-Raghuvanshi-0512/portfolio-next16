@@ -4,42 +4,10 @@ import { useRef } from "react";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { skills } from "@/lib/constants";
+import Image from "next/image";
 
 gsap.registerPlugin(ScrollTrigger);
-
-interface SkillCard {
-  title: string;
-  icon: string;
-  description: string;
-  color: string;
-}
-
-const skills: SkillCard[] = [
-  {
-    title: "Frontend Development",
-    icon: "⚛️",
-    description: "React, Next.js, TypeScript, Tailwind CSS",
-    color: "from-blue-500 to-cyan-500",
-  },
-  {
-    title: "Backend Development",
-    icon: "🚀",
-    description: "Node.js, Express, MongoDB, PostgreSQL",
-    color: "from-green-500 to-emerald-500",
-  },
-  {
-    title: "React Native",
-    icon: "📱",
-    description: "Cross-platform mobile apps with 200k+ users",
-    color: "from-purple-500 to-pink-500",
-  },
-  {
-    title: "Blockchain",
-    icon: "⛓️",
-    description: "Web3, Solidity, Smart Contracts, DApps",
-    color: "from-orange-500 to-red-500",
-  },
-];
 
 export function About() {
   const sectionRef = useRef<HTMLDivElement>(null);
@@ -147,8 +115,10 @@ export function About() {
         );
       }
 
-      // Animate number counter
+      // Animate number counters
       const yearsElement = document.querySelector(".years-count");
+      const projectsElement = document.querySelector(".projects-count");
+
       if (yearsElement) {
         ScrollTrigger.create({
           trigger: statsRef.current,
@@ -163,6 +133,29 @@ export function About() {
                 if (yearsElement instanceof HTMLElement) {
                   yearsElement.textContent = Math.ceil(
                     parseFloat(yearsElement.textContent || "0")
+                  ).toString();
+                }
+              },
+            });
+          },
+          once: true,
+        });
+      }
+
+      if (projectsElement) {
+        ScrollTrigger.create({
+          trigger: statsRef.current,
+          start: "top 80%",
+          onEnter: () => {
+            gsap.from(projectsElement, {
+              textContent: 0,
+              duration: 2.5,
+              ease: "power1.inOut",
+              snap: { textContent: 1 },
+              onUpdate: function () {
+                if (projectsElement instanceof HTMLElement) {
+                  projectsElement.textContent = Math.ceil(
+                    parseFloat(projectsElement.textContent || "0")
                   ).toString();
                 }
               },
@@ -259,9 +252,11 @@ export function About() {
             <div className="h-20 w-px bg-slate-700" />
             <div className="text-center">
               <div className="text-6xl md:text-7xl font-bold bg-linear-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent mb-2">
-                200K+
+                <span className="projects-count">50</span>+
               </div>
-              <p className="text-slate-400 text-lg font-medium">Active Users</p>
+              <p className="text-slate-400 text-lg font-medium">
+                Projects Completed
+              </p>
             </div>
           </div>
 
@@ -288,9 +283,17 @@ export function About() {
 
                   {/* Content */}
                   <div className="relative z-10 p-6 h-full flex flex-col justify-between">
-                    {/* Icon */}
-                    <div className="text-6xl mb-4 transform group-hover:scale-110 transition-transform duration-300">
-                      {skill.icon}
+                    {/* Image & Icon */}
+                    <div className="relative mb-4">
+                      <div className="relative w-24 h-24 mx-auto transform group-hover:scale-110 transition-transform duration-300">
+                        <Image
+                          src={skill.image}
+                          alt={skill.title}
+                          width={96}
+                          height={96}
+                          className="w-full h-full object-contain"
+                        />
+                      </div>
                     </div>
 
                     {/* Text */}

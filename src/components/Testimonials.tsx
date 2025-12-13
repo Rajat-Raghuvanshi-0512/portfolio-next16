@@ -4,51 +4,10 @@ import { useRef, useState } from "react";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { testimonials } from "@/lib/constants";
+import Image from "next/image";
 
 gsap.registerPlugin(ScrollTrigger);
-
-interface Testimonial {
-  id: number;
-  name: string;
-  role: string;
-  company: string;
-  testimonial: string;
-  avatar: string;
-  rating: number;
-}
-
-const testimonials: Testimonial[] = [
-  {
-    id: 1,
-    name: "Lokesh Chauhan",
-    role: "Founder",
-    company: "Pixy Square",
-    testimonial:
-      "Rajat developed our website exactly like we wanted it, and even better to be honest. His web development expertise has given us great digital products! Working with him was an absolute pleasure. He's not just technically skilled but also understands business needs perfectly.",
-    avatar: "👨‍💼",
-    rating: 5,
-  },
-  {
-    id: 2,
-    name: "Kamal Pratap",
-    role: "Project Manager",
-    company: "Duckcart",
-    testimonial:
-      "After Rajat optimized our website, our traffic increased by 30%. We can't thank you enough! His attention to detail and performance optimization skills are outstanding. He delivered beyond our expectations and on time.",
-    avatar: "🚀",
-    rating: 5,
-  },
-  {
-    id: 3,
-    name: "Abhijit",
-    role: "HR Manager",
-    company: "Skill Vertex",
-    testimonial:
-      "I've never met a web developer who truly cares about their client's success like Rajat does. Truly a great person and an exceptional developer. His commitment to quality and client satisfaction is unmatched in the industry.",
-    avatar: "💼",
-    rating: 5,
-  },
-];
 
 export function Testimonials() {
   const sectionRef = useRef<HTMLDivElement>(null);
@@ -217,8 +176,16 @@ export function Testimonials() {
                         {/* Author Info */}
                         <div className="flex items-center gap-4">
                           {/* Avatar */}
-                          <div className="w-16 h-16 rounded-full bg-linear-to-br from-purple-500 to-pink-500 flex items-center justify-center text-3xl">
-                            {testimonial.avatar}
+                          <div className="w-16 h-16 rounded-full bg-linear-to-br from-purple-500 to-pink-500 p-1 shrink-0">
+                            <div className="w-full h-full rounded-full overflow-hidden bg-slate-900">
+                              <Image
+                                src={testimonial.image}
+                                alt={testimonial.name}
+                                width={64}
+                                height={64}
+                                className="w-full h-full object-cover"
+                              />
+                            </div>
                           </div>
 
                           {/* Details */}

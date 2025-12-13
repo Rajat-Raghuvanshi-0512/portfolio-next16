@@ -4,125 +4,10 @@ import { useRef } from "react";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { experiences } from "@/lib/constants";
+import Image from "next/image";
 
 gsap.registerPlugin(ScrollTrigger);
-
-interface Experience {
-  id: number;
-  company: string;
-  role: string;
-  period: string;
-  startDate: string;
-  endDate: string;
-  icon: string;
-  description: string[];
-  side: "left" | "right";
-  color: string;
-}
-
-const experiences: Experience[] = [
-  {
-    id: 1,
-    company: "Hcode Technologies",
-    role: "Associate Software Developer",
-    period: "Dec 2023 - Present",
-    startDate: "Dec 2023",
-    endDate: "Present",
-    icon: "💻",
-    description: [
-      "Currently maintaining a native mobile application with over 200,000 users",
-      "Majorly working on bug fixes and code optimisations",
-      "Resolving user's query in minimal time",
-    ],
-    side: "right",
-    color: "from-blue-500 to-cyan-500",
-  },
-  {
-    id: 2,
-    company: "Pixy Square",
-    role: "Fullstack Developer",
-    period: "May 2023 - Nov 2023",
-    startDate: "May 2023",
-    endDate: "Nov 2023",
-    icon: "🎨",
-    description: [
-      "Fulfilling the demands of clients of new Startup applications",
-      "Developing figma designs into responsive web applications",
-      "Ensuring cross-browser compatibility",
-      "Using various optimization and SEO enhancing techniques",
-    ],
-    side: "left",
-    color: "from-purple-500 to-pink-500",
-  },
-  {
-    id: 3,
-    company: "Duckcart",
-    role: "NodeJs Developer",
-    period: "Nov 2022 - May 2023",
-    startDate: "Nov 2022",
-    endDate: "May 2023",
-    icon: "🚀",
-    description: [
-      "Managing the backend of a new Startup application",
-      "Creating new APIs and adding new features",
-      "Managing a team of Interns",
-      "Keeping track of changes and new features",
-    ],
-    side: "right",
-    color: "from-green-500 to-emerald-500",
-  },
-  {
-    id: 4,
-    company: "Qwings",
-    role: "Frontend Developer Intern",
-    period: "Mar 2022 - Jul 2022",
-    startDate: "Mar 2022",
-    endDate: "Jul 2022",
-    icon: "⚛️",
-    description: [
-      "Developing web applications using React.js",
-      "Collaborating with cross-functional teams",
-      "Participating in code reviews",
-      "Creating high-quality products",
-    ],
-    side: "left",
-    color: "from-orange-500 to-red-500",
-  },
-  {
-    id: 5,
-    company: "Avada",
-    role: "Web Developer Intern",
-    period: "Mar 2021 - Aug 2021",
-    startDate: "Mar 2021",
-    endDate: "Aug 2021",
-    icon: "🌐",
-    description: [
-      "Worked as a senior web developer",
-      "Lead a team of 8 people",
-      "Maintained the main website of the company",
-      "Taught colleagues good code practices",
-    ],
-    side: "right",
-    color: "from-indigo-500 to-purple-500",
-  },
-  {
-    id: 6,
-    company: "Skill Vertex",
-    role: "MERN Stack Developer Intern",
-    period: "Oct 2020 - Dec 2020",
-    startDate: "Oct 2020",
-    endDate: "Dec 2020",
-    icon: "📚",
-    description: [
-      "Developing web applications using MERN stack",
-      "Created E-commerce and Food delivery apps",
-      "Implementing responsive design",
-      "Ensuring cross-browser compatibility",
-    ],
-    side: "left",
-    color: "from-yellow-500 to-orange-500",
-  },
-];
 
 export function WorkExperience() {
   const sectionRef = useRef<HTMLDivElement>(null);
@@ -426,11 +311,17 @@ export function WorkExperience() {
                               </div>
                             </div>
 
-                            {/* Icon Badge */}
+                            {/* Company Logo Badge */}
                             <div
-                              className={`w-16 h-16 rounded-xl bg-linear-to-br ${exp.color} flex items-center justify-center text-3xl shadow-lg`}
+                              className={`w-16 h-16 rounded-xl bg-white/10 backdrop-blur-sm flex items-center justify-center shadow-lg overflow-hidden p-2 border border-slate-700`}
                             >
-                              {exp.icon}
+                              <Image
+                                src={exp.logo}
+                                alt={`${exp.company} logo`}
+                                width={64}
+                                height={64}
+                                className="w-full h-full object-contain"
+                              />
                             </div>
                           </div>
 
