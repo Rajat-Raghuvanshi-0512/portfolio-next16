@@ -196,26 +196,28 @@ export function Contact() {
                   </h3>
 
                   {/* Email */}
-                  <div className="contact-item flex items-start gap-4 group cursor-pointer">
+                  <div className="contact-item flex items-start gap-4">
                     <div className="w-12 h-12 rounded-xl bg-linear-to-br from-purple-500 to-pink-500 flex items-center justify-center text-2xl shrink-0 group-hover:scale-110 transition-transform">
                       📧
                     </div>
                     <div>
                       <p className="text-slate-400 text-sm mb-1">Email</p>
-                      <p className="text-white font-medium group-hover:text-purple-400 transition-colors">
-                        rajat@example.com
+                      <p className="text-white font-medium transition-colors">
+                        rajat.karnal@gmail.com
                       </p>
                     </div>
                   </div>
 
                   {/* Location */}
-                  <div className="contact-item flex items-start gap-4 group cursor-pointer">
+                  <div className="contact-item flex items-start gap-4">
                     <div className="w-12 h-12 rounded-xl bg-linear-to-br from-blue-500 to-cyan-500 flex items-center justify-center text-2xl shrink-0 group-hover:scale-110 transition-transform">
                       📍
                     </div>
                     <div>
                       <p className="text-slate-400 text-sm mb-1">Location</p>
-                      <p className="text-white font-medium">India</p>
+                      <p className="text-white font-medium">
+                        Chandigarh, India
+                      </p>
                     </div>
                   </div>
 
@@ -262,7 +264,7 @@ export function Contact() {
                           <div
                             className={`w-12 h-12 rounded-lg bg-linear-to-br ${social.color} flex items-center justify-center text-2xl group-hover:scale-110 transition-transform`}
                           >
-                            {social.icon}
+                            <social.icon className="w-6 h-6" />
                           </div>
                           <span className="text-sm font-medium text-slate-300 group-hover:text-white transition-colors">
                             {social.name}

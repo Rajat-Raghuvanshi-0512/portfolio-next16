@@ -186,8 +186,6 @@ export function Projects() {
                     transformStyle: "preserve-3d",
                     transform: isFlipped ? "rotateY(180deg)" : "rotateY(0deg)",
                   }}
-                  // onMouseEnter={() => setHoveredCard(project.id)}
-                  // onMouseLeave={() => setHoveredCard(null)}
                 >
                   {/* FRONT of Card */}
                   <div
