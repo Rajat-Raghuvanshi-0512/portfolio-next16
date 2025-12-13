@@ -29,7 +29,8 @@ export const testimonials: Testimonial[] = [
     testimonial:
       "After Rajat optimized our website, our traffic increased by 30%. We can't thank you enough! His attention to detail and performance optimization skills are outstanding. He delivered beyond our expectations and on time.",
     avatar: "🚀",
-    image: "/feedbacks/lokesh.jpeg",
+    image:
+      "https://res.cloudinary.com/rajat0512/image/upload/v1642447946/E-commerce/avatar_gehm7u.jpg",
     rating: 5,
   },
   {
@@ -40,8 +41,8 @@ export const testimonials: Testimonial[] = [
     testimonial:
       "I've never met a web developer who truly cares about their client's success like Rajat does. Truly a great person and an exceptional developer. His commitment to quality and client satisfaction is unmatched in the industry.",
     avatar: "💼",
-    image: "/feedbacks/lokesh.jpeg",
+    image:
+      "https://res.cloudinary.com/rajat0512/image/upload/v1642447946/E-commerce/avatar_gehm7u.jpg",
     rating: 5,
   },
 ];
-
