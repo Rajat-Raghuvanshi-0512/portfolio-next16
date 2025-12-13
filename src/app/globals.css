@@ -1,5 +1,5 @@
-@import 'tailwindcss';
-@import 'tw-animate-css';
+@import "tailwindcss";
+@import "tw-animate-css";
 
 @custom-variant dark (&:is(.dark *));
 
@@ -122,10 +122,11 @@
   body {
     @apply bg-background text-foreground;
     font-family: var(--font-poppins), -apple-system, BlinkMacSystemFont,
-      'Segoe UI', sans-serif;
+      "Segoe UI", sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
+    scroll-behavior: smooth;
   }
 
   h1,

@@ -172,7 +172,7 @@ export function Projects() {
             return (
               <div
                 key={project.id}
-                className="project-card shrink-0 w-[85vw] md:w-125"
+                className="project-card shrink-0 w-[85vw] md:w-125 group"
                 style={{
                   perspective: "2000px",
                 }}
@@ -186,6 +186,8 @@ export function Projects() {
                     transformStyle: "preserve-3d",
                     transform: isFlipped ? "rotateY(180deg)" : "rotateY(0deg)",
                   }}
+                  // onMouseEnter={() => setHoveredCard(project.id)}
+                  // onMouseLeave={() => setHoveredCard(null)}
                 >
                   {/* FRONT of Card */}
                   <div
@@ -193,6 +195,7 @@ export function Projects() {
                     style={{
                       backfaceVisibility: "hidden",
                       WebkitBackfaceVisibility: "hidden",
+                      pointerEvents: isFlipped ? "none" : "auto",
                     }}
                   >
                     {/* Gradient overlay */}
@@ -253,6 +256,7 @@ export function Projects() {
                       backfaceVisibility: "hidden",
                       WebkitBackfaceVisibility: "hidden",
                       transform: "rotateY(180deg)",
+                      pointerEvents: isFlipped ? "auto" : "none",
                     }}
                   >
                     {/* Gradient overlay */}
@@ -313,12 +317,40 @@ export function Projects() {
 
                       {/* Action Buttons */}
                       <div className="flex gap-4">
-                        <button className="flex-1 px-4 py-3 bg-purple-600 hover:bg-purple-500 text-white font-semibold rounded-lg transition-colors duration-300">
+                        <a
+                          href={project.websiteLink || "#"}
+                          target={project.websiteLink ? "_blank" : "_self"}
+                          rel={
+                            project.websiteLink
+                              ? "noopener noreferrer"
+                              : undefined
+                          }
+                          className="flex-1 px-4 py-3 bg-purple-600 hover:bg-purple-500 text-white font-semibold rounded-lg transition-colors duration-300 text-center block"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            if (!project.websiteLink) {
+                              e.preventDefault();
+                            }
+                          }}
+                        >
                           View Live
-                        </button>
-                        <button className="flex-1 px-4 py-3 border-2 border-purple-500 hover:border-purple-400 text-purple-300 hover:text-purple-200 font-semibold rounded-lg transition-colors duration-300">
+                        </a>
+                        <a
+                          href={project.codeLink || "#"}
+                          target={project.codeLink ? "_blank" : "_self"}
+                          rel={
+                            project.codeLink ? "noopener noreferrer" : undefined
+                          }
+                          className="flex-1 px-4 py-3 border-2 border-purple-500 hover:border-purple-400 text-purple-300 hover:text-purple-200 font-semibold rounded-lg transition-colors duration-300 text-center block"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            if (!project.codeLink) {
+                              e.preventDefault();
+                            }
+                          }}
+                        >
                           View Code
-                        </button>
+                        </a>
                       </div>
 
                       {/* Flip back indicator */}

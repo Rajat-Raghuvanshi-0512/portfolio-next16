@@ -168,39 +168,6 @@ export function About() {
     { scope: sectionRef, dependencies: [] }
   );
 
-  // Individual card hover animations
-  useGSAP(
-    () => {
-      const cards = cardsContainerRef.current?.querySelectorAll(".skill-card");
-
-      cards?.forEach((card) => {
-        const handleMouseEnter = () => {
-          gsap.to(card, {
-            scale: 1.05,
-            rotateY: 5,
-            rotateX: 5,
-            duration: 0.3,
-            ease: "power2.out",
-          });
-        };
-
-        const handleMouseLeave = () => {
-          gsap.to(card, {
-            scale: 1,
-            rotateY: 0,
-            rotateX: 0,
-            duration: 0.3,
-            ease: "power2.out",
-          });
-        };
-
-        card.addEventListener("mouseenter", handleMouseEnter);
-        card.addEventListener("mouseleave", handleMouseLeave);
-      });
-    },
-    { scope: cardsContainerRef, dependencies: [] }
-  );
-
   return (
     <section
       id="about"

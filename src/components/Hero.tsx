@@ -1,10 +1,12 @@
 "use client";
 
+import Link from "next/link";
 import { useRef } from "react";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ScrollIndicator } from "./ScrollIndicator";
+import { Button } from "./ui/button";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -215,13 +217,20 @@ export function Hero() {
             className="flex flex-col sm:flex-row gap-4 justify-center items-center"
           >
             <button className="group relative px-8 py-4 bg-white text-slate-900 font-semibold text-base rounded-lg overflow-hidden transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-purple-500/50">
-              <span className="relative z-10 tracking-wide">View My Work</span>
+              <span
+                className="relative z-10 tracking-wide"
+                onClick={() => window.open("/resume.pdf", "_blank")}
+              >
+                My Resume
+              </span>
               <div className="absolute inset-0 bg-linear-to-r from-purple-400 to-blue-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
             </button>
-
-            <button className="px-8 py-4 border-2 border-slate-400 text-slate-200 font-semibold text-base rounded-lg transition-all duration-300 hover:border-white hover:text-white hover:scale-105 hover:shadow-xl hover:shadow-slate-700/50 tracking-wide">
-              Get In Touch
-            </button>
+            <Button
+              asChild
+              className="px-8 py-4 border-2 border-slate-400 text-slate-200 font-semibold text-base rounded-lg transition-all duration-300 hover:border-white hover:text-white hover:scale-105 hover:shadow-xl hover:shadow-slate-700/50 tracking-wide bg-transparent h-full hover:bg-transparent"
+            >
+              <Link href="#contact">Get In Touch</Link>
+            </Button>
           </div>
         </div>
       </div>

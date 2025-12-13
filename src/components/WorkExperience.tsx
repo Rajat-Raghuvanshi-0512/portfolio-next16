@@ -109,7 +109,7 @@ export function WorkExperience() {
         const company = card.querySelector(".experience-company");
         const role = card.querySelector(".experience-role");
         const period = card.querySelector(".experience-period");
-        const listItems = card.querySelectorAll(".list-item");
+        const listItems = card.querySelectorAll(".li-item");
 
         // Company name appears first
         cardTimeline.from(
@@ -330,7 +330,7 @@ export function WorkExperience() {
                             {exp.description.map((item, idx) => (
                               <li
                                 key={idx}
-                                className="flex items-start text-slate-300 font-light leading-relaxed"
+                                className="flex items-start text-slate-300 font-light leading-relaxed li-item"
                               >
                                 <span
                                   className={`text-transparent bg-linear-to-r ${exp.color} bg-clip-text mr-3 mt-1 shrink-0 font-bold`}
