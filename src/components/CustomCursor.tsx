@@ -3,8 +3,10 @@
 import { useRef, useEffect, useState } from "react";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
+import { useIsMobile } from "@/hooks/useIsMobile";
 
 export function CustomCursor() {
+  const isMobile = useIsMobile();
   const cursorRef = useRef<HTMLDivElement>(null);
   const cursorDotRef = useRef<HTMLDivElement>(null);
   const lensRef = useRef<HTMLDivElement>(null);
@@ -160,11 +162,16 @@ export function CustomCursor() {
   useEffect(() => {
     const isTouchDevice =
       "ontouchstart" in window || navigator.maxTouchPoints > 0;
-    if (isTouchDevice) {
+    if (isTouchDevice || isMobile) {
       // eslint-disable-next-line
       setIsHidden(true);
     }
-  }, []);
+  }, [isMobile]);
+
+  // Don't render at all on mobile
+  if (isMobile) {
+    return null;
+  }
 
   return (
     <>
