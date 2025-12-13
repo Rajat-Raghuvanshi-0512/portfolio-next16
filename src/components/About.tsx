@@ -68,6 +68,12 @@ export function About() {
 
       // Stage 1: Fade in heading
       mainTl.from(headingRef.current, {
+        scrollTrigger: {
+          trigger: headingRef.current,
+          start: "top 100%",
+          end: "top 60%",
+          scrub: 1,
+        },
         opacity: 0,
         y: 100,
         scale: 0.8,
@@ -78,6 +84,12 @@ export function About() {
       mainTl.from(
         descriptionRef.current,
         {
+          scrollTrigger: {
+            trigger: headingRef.current,
+            start: "top 80%",
+            end: "top 50%",
+            scrub: 1,
+          },
           opacity: 0,
           y: 50,
           duration: 1,
@@ -89,6 +101,12 @@ export function About() {
       mainTl.from(
         statsRef.current,
         {
+          scrollTrigger: {
+            trigger: statsRef.current,
+            start: "top 60%",
+            end: "top 40%",
+            scrub: 1,
+          },
           opacity: 0,
           scale: 0.8,
           duration: 1,
@@ -101,6 +119,11 @@ export function About() {
         mainTl.from(
           cards,
           {
+            scrollTrigger: {
+              trigger: cards,
+              start: "top 80%",
+              scrub: 1,
+            },
             opacity: 0,
             y: 200,
             rotateX: -90,

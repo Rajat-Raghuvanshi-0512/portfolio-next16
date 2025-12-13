@@ -129,86 +129,149 @@ export function WorkExperience() {
   const headingRef = useRef<HTMLHeadingElement>(null);
   const timelineLineRef = useRef<HTMLDivElement>(null);
   const cardsContainerRef = useRef<HTMLDivElement>(null);
-
+  const descriptionRef = useRef<HTMLParagraphElement>(null);
   useGSAP(
     () => {
       if (!sectionRef.current || !cardsContainerRef.current) return;
 
-      const cards = cardsContainerRef.current.querySelectorAll(".experience-card");
+      const cards =
+        cardsContainerRef.current.querySelectorAll(".experience-card");
       const dots = cardsContainerRef.current.querySelectorAll(".timeline-dot");
 
-      // Main pinned timeline
-      const mainTimeline = gsap.timeline({
+      // Heading entrance
+      gsap.from(headingRef.current, {
         scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top top",
-          end: "+=4000",
+          trigger: headingRef.current,
+          start: "top 100%",
+          end: "top 70%",
           scrub: 1,
-          pin: true,
-          anticipatePin: 1,
         },
-      });
-
-      // Stage 1: Heading entrance
-      mainTimeline.from(headingRef.current, {
         opacity: 0,
         y: 100,
         scale: 0.9,
-        duration: 0.5,
       });
 
-      // Stage 2: Timeline line draws from top to bottom
+      // Description entrance
+      gsap.from(descriptionRef.current, {
+        scrollTrigger: {
+          trigger: descriptionRef.current,
+          start: "top 80%",
+          end: "top 50%",
+          scrub: 1,
+        },
+        opacity: 0,
+        y: 50,
+        scale: 0.95,
+      });
+
+      // Timeline line draws progressively as user scrolls
       if (timelineLineRef.current) {
-        mainTimeline.from(
+        gsap.fromTo(
           timelineLineRef.current,
           {
             scaleY: 0,
-            transformOrigin: "top",
-            duration: 1,
           },
-          "+=0.2"
+          {
+            scaleY: 1,
+            transformOrigin: "top",
+            ease: "none",
+            scrollTrigger: {
+              trigger: cardsContainerRef.current,
+              start: "top 60%",
+              end: "bottom 80%",
+              scrub: 1,
+            },
+          }
         );
       }
 
-      // Stage 3: Cards and dots appear one by one with stagger
+      // Each card animates independently as it comes into view
       cards.forEach((card, index) => {
         const side = experiences[index].side;
+        const dot = dots[index];
+
+        // Create a timeline for each card
+        const cardTimeline = gsap.timeline({
+          scrollTrigger: {
+            trigger: card,
+            start: "top 70%",
+            end: "top 30%",
+            toggleActions: "play none none reverse",
+          },
+        });
 
         // Card entrance
-        mainTimeline.from(
-          card,
-          {
-            opacity: 0,
-            x: side === "left" ? -200 : 200,
-            rotateY: side === "left" ? -30 : 30,
-            duration: 0.8,
-            ease: "power3.out",
-          },
-          `card-${index}`
-        );
+        cardTimeline.from(card, {
+          opacity: 0,
+          x: side === "left" ? -200 : 200,
+          rotateY: side === "left" ? -30 : 30,
+          duration: 0.8,
+          ease: "power3.out",
+        });
 
         // Dot pulse animation
-        mainTimeline.from(
-          dots[index],
+        cardTimeline.from(
+          dot,
           {
             scale: 0,
             duration: 0.4,
             ease: "back.out(2)",
           },
-          `card-${index}+=0.2`
+          "-=0.6"
         );
 
-        // List items stagger
+        // Sequential animation: Company -> Role -> Period -> Description
+        const company = card.querySelector(".experience-company");
+        const role = card.querySelector(".experience-role");
+        const period = card.querySelector(".experience-period");
         const listItems = card.querySelectorAll(".list-item");
-        mainTimeline.from(
+
+        // Company name appears first
+        cardTimeline.from(
+          company,
+          {
+            opacity: 0,
+            y: 20,
+            duration: 0.5,
+            ease: "power2.out",
+          },
+          "-=0.5"
+        );
+
+        // Role appears after company
+        cardTimeline.from(
+          role,
+          {
+            opacity: 0,
+            y: 20,
+            duration: 0.5,
+            ease: "power2.out",
+          },
+          "-=0.3"
+        );
+
+        // Period appears after role
+        cardTimeline.from(
+          period,
+          {
+            opacity: 0,
+            y: 20,
+            duration: 0.4,
+            ease: "power2.out",
+          },
+          "-=0.3"
+        );
+
+        // List items (description) stagger after period
+        cardTimeline.from(
           listItems,
           {
             opacity: 0,
             x: side === "left" ? -30 : 30,
-            stagger: 0.1,
-            duration: 0.4,
+            stagger: 0.15,
+            duration: 0.5,
           },
-          `card-${index}+=0.4`
+          "-=0.2"
         );
       });
 
@@ -240,7 +303,7 @@ export function WorkExperience() {
     <section
       id="work"
       ref={sectionRef}
-      className="relative min-h-screen w-full overflow-hidden bg-slate-900"
+      className="relative w-full overflow-hidden bg-slate-900 py-20"
     >
       {/* Background effects */}
       <div className="absolute inset-0">
@@ -248,8 +311,8 @@ export function WorkExperience() {
         <div className="absolute bottom-1/3 right-1/3 w-96 h-96 bg-blue-600/10 rounded-full blur-3xl" />
       </div>
 
-      <div className="relative z-10 min-h-screen flex items-center justify-center px-6 py-20">
-        <div className="max-w-7xl w-full">
+      <div className="relative z-10 px-6">
+        <div className="max-w-7xl w-full mx-auto">
           {/* Section Heading */}
           <div className="text-center mb-20">
             <h2
@@ -261,7 +324,10 @@ export function WorkExperience() {
                 Experience
               </span>
             </h2>
-            <p className="text-lg md:text-xl text-slate-300 max-w-3xl mx-auto font-light">
+            <p
+              ref={descriptionRef}
+              className="text-lg md:text-xl text-slate-300 max-w-3xl mx-auto font-light"
+            >
               My professional journey through amazing companies and projects
             </p>
           </div>
@@ -278,7 +344,7 @@ export function WorkExperience() {
 
             {/* Experience Cards */}
             <div className="space-y-16 md:space-y-24">
-              {experiences.map((exp, index) => (
+              {experiences.map((exp) => (
                 <div
                   key={exp.id}
                   className="relative"
@@ -290,7 +356,9 @@ export function WorkExperience() {
                       {/* Pulsing ring */}
                       <div className="absolute inset-0 w-8 h-8 rounded-full bg-white/20 animate-ping" />
                       {/* Solid dot */}
-                      <div className={`w-8 h-8 rounded-full bg-linear-to-br ${exp.color} border-4 border-slate-900 flex items-center justify-center text-lg shadow-lg`}>
+                      <div
+                        className={`w-8 h-8 rounded-full bg-linear-to-br ${exp.color} border-4 border-slate-900 flex items-center justify-center text-lg shadow-lg`}
+                      >
                         {exp.icon}
                       </div>
                     </div>
@@ -299,7 +367,9 @@ export function WorkExperience() {
                   {/* Experience Card */}
                   <div
                     className={`experience-card relative md:w-[45%] ${
-                      exp.side === "left" ? "md:mr-auto md:pr-12" : "md:ml-auto md:pl-12"
+                      exp.side === "left"
+                        ? "md:mr-auto md:pr-12"
+                        : "md:ml-auto md:pl-12"
                     }`}
                     style={{ transformStyle: "preserve-3d" }}
                   >
@@ -309,28 +379,34 @@ export function WorkExperience() {
                     {/* Card */}
                     <div className="relative group ml-16 md:ml-0">
                       {/* Mobile Dot */}
-                      <div className="absolute -left-[4.5rem] top-6 md:hidden">
-                        <div className={`w-8 h-8 rounded-full bg-linear-to-br ${exp.color} border-4 border-slate-900 flex items-center justify-center text-lg`}>
+                      <div className="absolute -left-18 top-6 md:hidden">
+                        <div
+                          className={`w-8 h-8 rounded-full bg-linear-to-br ${exp.color} border-4 border-slate-900 flex items-center justify-center text-lg`}
+                        >
                           {exp.icon}
                         </div>
                       </div>
 
                       <div className="relative rounded-2xl bg-slate-950/80 backdrop-blur-sm border border-slate-800 p-6 md:p-8 overflow-hidden transition-all duration-300">
                         {/* Gradient overlay */}
-                        <div className={`absolute inset-0 bg-linear-to-br ${exp.color} opacity-0 group-hover:opacity-10 transition-opacity duration-300`} />
+                        <div
+                          className={`absolute inset-0 bg-linear-to-br ${exp.color} opacity-0 group-hover:opacity-10 transition-opacity duration-300`}
+                        />
 
                         {/* Content */}
                         <div className="relative z-10">
                           {/* Header */}
                           <div className="flex items-start justify-between mb-4">
                             <div className="flex-1">
-                              <h3 className="text-2xl md:text-3xl font-bold text-white mb-2 tracking-tight">
+                              <h3 className="experience-company text-2xl md:text-3xl font-bold text-white mb-2 tracking-tight">
                                 {exp.company}
                               </h3>
-                              <p className={`text-lg font-semibold bg-linear-to-r ${exp.color} bg-clip-text text-transparent mb-2`}>
+                              <p
+                                className={`experience-role text-lg font-semibold bg-linear-to-r ${exp.color} bg-clip-text text-transparent mb-2`}
+                              >
                                 {exp.role}
                               </p>
-                              <div className="flex items-center gap-2 text-slate-400 text-sm">
+                              <div className="experience-period flex items-center gap-2 text-slate-400 text-sm">
                                 <svg
                                   className="w-4 h-4"
                                   fill="none"
@@ -344,12 +420,16 @@ export function WorkExperience() {
                                     d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
                                   />
                                 </svg>
-                                <span className="font-medium">{exp.period}</span>
+                                <span className="font-medium">
+                                  {exp.period}
+                                </span>
                               </div>
                             </div>
 
                             {/* Icon Badge */}
-                            <div className={`w-16 h-16 rounded-xl bg-linear-to-br ${exp.color} flex items-center justify-center text-3xl shadow-lg`}>
+                            <div
+                              className={`w-16 h-16 rounded-xl bg-linear-to-br ${exp.color} flex items-center justify-center text-3xl shadow-lg`}
+                            >
                               {exp.icon}
                             </div>
                           </div>
@@ -359,9 +439,11 @@ export function WorkExperience() {
                             {exp.description.map((item, idx) => (
                               <li
                                 key={idx}
-                                className="list-item flex items-start text-slate-300 font-light leading-relaxed"
+                                className="flex items-start text-slate-300 font-light leading-relaxed"
                               >
-                                <span className={`text-transparent bg-linear-to-r ${exp.color} bg-clip-text mr-3 mt-1 flex-shrink-0 font-bold`}>
+                                <span
+                                  className={`text-transparent bg-linear-to-r ${exp.color} bg-clip-text mr-3 mt-1 shrink-0 font-bold`}
+                                >
                                   ▸
                                 </span>
                                 <span>{item}</span>
@@ -383,7 +465,7 @@ export function WorkExperience() {
           </div>
 
           {/* Timeline End Marker */}
-          <div className="flex justify-center mt-16">
+          <div className="flex justify-center mt-16 md:-mt-1">
             <div className="w-16 h-16 rounded-full bg-linear-to-br from-purple-500 to-pink-500 flex items-center justify-center text-2xl shadow-lg border-4 border-slate-900">
               🚀
             </div>
@@ -393,4 +475,3 @@ export function WorkExperience() {
     </section>
   );
 }
-

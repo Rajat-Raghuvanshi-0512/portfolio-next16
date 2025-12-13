@@ -91,19 +91,6 @@ export function Hero() {
           );
         }
 
-        // Animate CTA
-        if (ctaRef.current) {
-          entranceTl.from(
-            ctaRef.current,
-            {
-              opacity: 0,
-              scale: 0.8,
-              duration: 0.6,
-            },
-            "-=0.4"
-          );
-        }
-
         // Animate description
         if (descriptionRef.current) {
           entranceTl.from(
@@ -111,6 +98,19 @@ export function Hero() {
             {
               opacity: 0,
               y: 30,
+              duration: 0.6,
+            },
+            "-=0.4"
+          );
+        }
+
+        // Animate CTA
+        if (ctaRef.current) {
+          entranceTl.from(
+            ctaRef.current,
+            {
+              opacity: 0,
+              scale: 0.8,
               duration: 0.8,
             },
             "-=0.3"

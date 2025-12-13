@@ -144,7 +144,7 @@ export function Projects() {
   const trackerRef = useRef<HTMLDivElement>(null);
   const cardsContainerRef = useRef<HTMLDivElement>(null);
   const [hoveredCard, setHoveredCard] = useState<number | null>(null);
-
+  const descriptionRef = useRef<HTMLParagraphElement>(null);
   useGSAP(
     () => {
       if (!sectionRef.current || !cardsContainerRef.current) return;
@@ -155,12 +155,25 @@ export function Projects() {
       gsap.from(headingRef.current, {
         scrollTrigger: {
           trigger: headingRef.current,
+          start: "top 100%",
+          end: "top 60%",
+          scrub: 1,
+        },
+        opacity: 0,
+        y: 100,
+        scale: 0.8,
+      });
+
+      // Description entrance
+      gsap.from(descriptionRef.current, {
+        scrollTrigger: {
+          trigger: descriptionRef.current,
           start: "top 80%",
           end: "top 50%",
           scrub: 1,
         },
         opacity: 0,
-        y: 100,
+        y: 50,
         scale: 0.8,
       });
 
@@ -267,23 +280,12 @@ export function Projects() {
               Projects
             </span>
           </h2>
-          <p className="text-lg md:text-xl text-slate-300 max-w-3xl mx-auto font-light">
+          <p
+            ref={descriptionRef}
+            className="text-lg md:text-xl text-slate-300 max-w-3xl mx-auto font-light mt-4 md:mt-10"
+          >
             Following projects showcase my skills through real-world examples.
             Click cards to flip and see details!
-          </p>
-        </div>
-
-        {/* Progress Tracker - Traveling Element */}
-        <div className="max-w-7xl mx-auto mt-8">
-          <div className="h-1 bg-slate-800 rounded-full overflow-hidden">
-            <div
-              ref={trackerRef}
-              className="h-full bg-linear-to-r from-purple-500 via-pink-500 to-orange-500"
-              style={{ width: "0%" }}
-            />
-          </div>
-          <p className="text-center text-slate-500 text-sm mt-2 font-medium">
-            Scroll to explore projects →
           </p>
         </div>
       </div>
@@ -300,7 +302,7 @@ export function Projects() {
             return (
               <div
                 key={project.id}
-                className="project-card shrink-0 w-[85vw] md:w-[500px]"
+                className="project-card shrink-0 w-[85vw] md:w-125"
                 style={{
                   perspective: "2000px",
                 }}
@@ -309,7 +311,7 @@ export function Projects() {
               >
                 {/* 3D Flip Card Container */}
                 <div
-                  className="relative w-full h-[600px] transition-transform duration-700 ease-out"
+                  className="relative w-full h-150 transition-transform duration-700 ease-out"
                   style={{
                     transformStyle: "preserve-3d",
                     transform: isFlipped ? "rotateY(180deg)" : "rotateY(0deg)",

@@ -53,6 +53,7 @@ const testimonials: Testimonial[] = [
 export function Testimonials() {
   const sectionRef = useRef<HTMLDivElement>(null);
   const headingRef = useRef<HTMLHeadingElement>(null);
+  const descriptionRef = useRef<HTMLParagraphElement>(null);
   const cardsRef = useRef<HTMLDivElement>(null);
   const [activeIndex, setActiveIndex] = useState(0);
 
@@ -64,8 +65,8 @@ export function Testimonials() {
       gsap.from(headingRef.current, {
         scrollTrigger: {
           trigger: headingRef.current,
-          start: "top 80%",
-          end: "top 50%",
+          start: "top 100%",
+          end: "top 70%",
           scrub: 1,
         },
         opacity: 0,
@@ -73,10 +74,23 @@ export function Testimonials() {
         scale: 0.9,
       });
 
+      // Description entrance
+      gsap.from(descriptionRef.current, {
+        scrollTrigger: {
+          trigger: descriptionRef.current,
+          start: "top 80%",
+          end: "top 50%",
+          scrub: 1,
+        },
+        opacity: 0,
+        y: 50,
+        scale: 0.95,
+      });
+
       // Cards entrance with 3D effect
       const cards = cardsRef.current.querySelectorAll(".testimonial-card");
 
-      cards.forEach((card, index) => {
+      cards.forEach((card) => {
         gsap.from(card, {
           scrollTrigger: {
             trigger: card,
@@ -104,9 +118,7 @@ export function Testimonials() {
   }, []);
 
   const handlePrevious = () => {
-    setActiveIndex((prev) =>
-      prev === 0 ? testimonials.length - 1 : prev - 1
-    );
+    setActiveIndex((prev) => (prev === 0 ? testimonials.length - 1 : prev - 1));
   };
 
   const handleNext = () => {
@@ -138,15 +150,19 @@ export function Testimonials() {
                 Say
               </span>
             </h2>
-            <p className="text-lg md:text-xl text-slate-300 max-w-3xl mx-auto font-light">
-              Don't just take my word for it - hear from people I've worked with
+            <p
+              ref={descriptionRef}
+              className="text-lg md:text-xl text-slate-300 max-w-3xl mx-auto font-light"
+            >
+              Don&apos;t just take my word for it - hear from people I&apos;ve
+              worked with
             </p>
           </div>
 
           {/* Testimonials Carousel */}
           <div ref={cardsRef} className="relative">
             {/* Cards Container */}
-            <div className="relative h-[600px] md:h-[500px] flex items-center justify-center perspective-[2000px]">
+            <div className="relative h-150 md:h-125 flex items-center justify-center perspective-[2000px]">
               {testimonials.map((testimonial, index) => {
                 const offset = index - activeIndex;
                 const absOffset = Math.abs(offset);
@@ -175,7 +191,7 @@ export function Testimonials() {
 
                       {/* Quote Icon */}
                       <div className="absolute top-6 right-6 text-6xl text-purple-500/20">
-                        "
+                        &#34;
                       </div>
 
                       {/* Content */}
@@ -195,7 +211,7 @@ export function Testimonials() {
 
                         {/* Testimonial Text */}
                         <p className="text-xl md:text-2xl text-slate-200 leading-relaxed mb-8 font-light italic">
-                          "{testimonial.testimonial}"
+                          &#34;{testimonial.testimonial}&#34;
                         </p>
 
                         {/* Author Info */}
@@ -290,4 +306,3 @@ export function Testimonials() {
     </section>
   );
 }
-
