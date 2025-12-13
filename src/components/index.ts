@@ -1,0 +1,9 @@
+export { Hero } from "./Hero";
+export { ScrollIndicator } from "./ScrollIndicator";
+export { About } from "./About";
+export { Projects } from "./Projects";
+export { Navbar } from "./Navbar";
+export { CustomCursor } from "./CustomCursor";
+export { WorkExperience } from "./WorkExperience";
+export { Testimonials } from "./Testimonials";
+export { Contact } from "./Contact";
