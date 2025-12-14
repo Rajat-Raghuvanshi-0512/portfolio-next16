@@ -42,7 +42,7 @@ export function ScrollIndicator() {
   return (
     <div
       ref={indicatorRef}
-      className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3 z-20"
+      className="absolute bottom-5 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3 z-20"
     >
       <span className="text-slate-400 text-xs font-medium tracking-widest uppercase">
         Scroll
