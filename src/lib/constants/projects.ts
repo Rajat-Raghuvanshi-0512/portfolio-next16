@@ -145,7 +145,7 @@ export const projects: Project[] = [
     },
   },
   {
-    id: 4,
+    id: 7,
     title: "Voyage Tours",
     category: "Next.js",
     description:

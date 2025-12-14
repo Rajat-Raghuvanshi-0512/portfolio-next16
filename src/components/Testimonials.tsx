@@ -190,9 +190,9 @@ export function Testimonials() {
 
                           {/* Details */}
                           <div>
-                            <h4 className="text-xl font-bold text-white mb-1">
+                            <h3 className="text-xl font-bold text-white mb-1">
                               {testimonial.name}
-                            </h4>
+                            </h3>
                             <p className="text-slate-400 font-medium">
                               {testimonial.role} • {testimonial.company}
                             </p>
@@ -214,14 +214,15 @@ export function Testimonials() {
             <div className="flex justify-center items-center gap-6 mt-8">
               <button
                 onClick={handlePrevious}
+                aria-label="Previous testimonial"
                 className="w-12 h-12 rounded-full bg-slate-800/50 border border-slate-700 flex items-center justify-center text-white hover:bg-slate-700 hover:border-slate-600 transition-all duration-300 hover:scale-110"
-                data-cursor="Previous"
               >
                 <svg
                   className="w-6 h-6"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
+                  aria-hidden="true"
                 >
                   <path
                     strokeLinecap="round"
@@ -233,11 +234,20 @@ export function Testimonials() {
               </button>
 
               {/* Dots */}
-              <div className="flex gap-2">
-                {testimonials.map((_, index) => (
+              <div
+                className="flex gap-2"
+                role="tablist"
+                aria-label="Testimonials navigation"
+              >
+                {testimonials.map((testimonial, index) => (
                   <button
                     key={index}
                     onClick={() => setActiveIndex(index)}
+                    role="tab"
+                    aria-selected={index === activeIndex}
+                    aria-label={`Go to testimonial ${index + 1} from ${
+                      testimonial.name
+                    }`}
                     className={`h-2 rounded-full transition-all duration-300 ${
                       index === activeIndex
                         ? "w-8 bg-purple-500"
@@ -249,14 +259,15 @@ export function Testimonials() {
 
               <button
                 onClick={handleNext}
+                aria-label="Next testimonial"
                 className="w-12 h-12 rounded-full bg-slate-800/50 border border-slate-700 flex items-center justify-center text-white hover:bg-slate-700 hover:border-slate-600 transition-all duration-300 hover:scale-110"
-                data-cursor="Next"
               >
                 <svg
                   className="w-6 h-6"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
+                  aria-hidden="true"
                 >
                   <path
                     strokeLinecap="round"

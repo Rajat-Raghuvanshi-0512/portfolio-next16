@@ -185,7 +185,7 @@ export function Hero() {
           {/* Main Title */}
           <h1
             ref={titleRef}
-            className="mb-6 text-5xl font-extrabold leading-tight tracking-tight text-white sm:text-7xl md:text-8xl lg:text-9xl"
+            className="mb-6 text-5xl font-extrabold leading-tight tracking-tight text-white sm:text-7xl md:text-8xl lg:text-9xl min-h-[120px] sm:min-h-[180px] md:min-h-[240px] lg:min-h-[300px]"
             style={{ perspective: "1000px" }}
           >
             <span className="first-name">{splitText("Rajat", false)}</span>
@@ -214,15 +214,14 @@ export function Hero() {
           {/* CTA Buttons */}
           <div
             ref={ctaRef}
-            className="flex flex-col sm:flex-row gap-4 justify-center items-center"
+            className="flex flex-col sm:flex-row gap-4 justify-center items-center min-h-[56px]"
           >
-            <button className="group w-full sm:w-auto relative px-8 py-4 bg-white text-slate-900 font-semibold text-base rounded-lg overflow-hidden transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-purple-500/50">
-              <span
-                className="relative z-10 tracking-wide"
-                onClick={() => window.open("/resume.pdf", "_blank")}
-              >
-                My Resume
-              </span>
+            <button
+              onClick={() => window.open("/resume.pdf", "_blank")}
+              aria-label="Download my resume"
+              className="group w-full sm:w-auto relative px-8 py-4 bg-white text-slate-900 font-semibold text-base rounded-lg overflow-hidden transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-purple-500/50"
+            >
+              <span className="relative z-10 tracking-wide">My Resume</span>
               <div className="absolute inset-0 bg-linear-to-r from-purple-400 to-blue-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
             </button>
             <Button
