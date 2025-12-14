@@ -20,108 +20,157 @@ export function Projects() {
       if (!sectionRef.current || !cardsContainerRef.current) return;
 
       const cards = cardsContainerRef.current.querySelectorAll(".project-card");
+      const mm = gsap.matchMedia();
 
-      // Heading entrance
-      gsap.from(headingRef.current, {
-        scrollTrigger: {
-          trigger: headingRef.current,
-          start: "top 100%",
-          end: "top 60%",
-          scrub: 1,
-        },
-        opacity: 0,
-        y: 100,
-        scale: 0.8,
-      });
-
-      // Description entrance
-      gsap.from(descriptionRef.current, {
-        scrollTrigger: {
-          trigger: descriptionRef.current,
-          start: "top 80%",
-          end: "top 50%",
-          scrub: 1,
-        },
-        opacity: 0,
-        y: 50,
-        scale: 0.8,
-      });
-
-      // Set initial state for all cards
-      gsap.set(cards, {
-        opacity: 1,
-        scale: 1,
-        rotateY: 0,
-      });
-
-      // Horizontal scroll effect - pin section and scroll cards horizontally
-      const horizontalScroll = gsap.to(cards, {
-        xPercent: -100 * (cards.length - 1),
-        ease: "none",
-        scrollTrigger: {
-          trigger: cardsContainerRef.current,
-          pin: true,
-          scrub: 1,
-          snap: 1 / (cards.length - 1),
-          end: () => "+=" + cardsContainerRef.current!.offsetWidth * 2,
-        },
-      });
-
-      // Individual card zoom and rotation animations
-      cards.forEach((card) => {
-        // Zoom in as card enters center
-        gsap.fromTo(
-          card,
-          {
-            scale: 0.85,
-            opacity: 0.6,
+      // Mobile: Simple animations without scroll blocking
+      mm.add("(max-width: 767px)", () => {
+        // Simple fade in heading
+        gsap.from(headingRef.current, {
+          scrollTrigger: {
+            trigger: headingRef.current,
+            start: "top 80%",
+            toggleActions: "play none none none",
           },
-          {
-            scale: 1,
-            opacity: 1,
-            scrollTrigger: {
-              trigger: card,
-              containerAnimation: horizontalScroll,
-              start: "left right",
-              end: "center center",
-              scrub: 1,
-            },
-          }
-        );
+          opacity: 0,
+          y: 30,
+          duration: 0.8,
+          ease: "power2.out",
+        });
 
-        // Zoom out as card exits center
-        gsap.fromTo(
-          card,
-          {
-            scale: 1,
-            opacity: 1,
+        // Simple fade in description
+        gsap.from(descriptionRef.current, {
+          scrollTrigger: {
+            trigger: descriptionRef.current,
+            start: "top 80%",
+            toggleActions: "play none none none",
           },
-          {
-            scale: 0.85,
-            opacity: 0.6,
-            scrollTrigger: {
-              trigger: card,
-              containerAnimation: horizontalScroll,
-              start: "center center",
-              end: "right left",
-              scrub: 1,
-            },
-          }
-        );
-      });
+          opacity: 0,
+          y: 30,
+          duration: 0.8,
+          ease: "power2.out",
+        });
 
-      // Traveling element - progress tracker
-      if (trackerRef.current) {
-        gsap.to(trackerRef.current, {
-          width: "100%",
+        // Simple staggered fade in for cards (no horizontal scroll)
+        gsap.from(cards, {
           scrollTrigger: {
             trigger: cardsContainerRef.current,
-            start: "top top",
-            end: () => "+=" + cardsContainerRef.current!.offsetWidth * 2,
+            start: "top 80%",
+            toggleActions: "play none none none",
+          },
+          opacity: 0,
+          y: 50,
+          stagger: 0.2,
+          duration: 0.8,
+          ease: "power2.out",
+        });
+      });
+
+      // Desktop: Complex horizontal scroll animations
+      mm.add("(min-width: 768px)", () => {
+        // Heading entrance
+        gsap.from(headingRef.current, {
+          scrollTrigger: {
+            trigger: headingRef.current,
+            start: "top 100%",
+            end: "top 60%",
             scrub: 1,
           },
+          opacity: 0,
+          y: 100,
+          scale: 0.8,
         });
-      }
+
+        // Description entrance
+        gsap.from(descriptionRef.current, {
+          scrollTrigger: {
+            trigger: descriptionRef.current,
+            start: "top 80%",
+            end: "top 50%",
+            scrub: 1,
+          },
+          opacity: 0,
+          y: 50,
+          scale: 0.8,
+        });
+
+        // Set initial state for all cards
+        gsap.set(cards, {
+          opacity: 1,
+          scale: 1,
+          rotateY: 0,
+        });
+
+        // Horizontal scroll effect - pin section and scroll cards horizontally
+        const horizontalScroll = gsap.to(cards, {
+          xPercent: -100 * (cards.length - 1),
+          ease: "none",
+          scrollTrigger: {
+            trigger: cardsContainerRef.current,
+            pin: true,
+            scrub: 1,
+            snap: 1 / (cards.length - 1),
+            end: () => "+=" + cardsContainerRef.current!.offsetWidth * 2,
+          },
+        });
+
+        // Individual card zoom and rotation animations
+        cards.forEach((card) => {
+          // Zoom in as card enters center
+          gsap.fromTo(
+            card,
+            {
+              scale: 0.85,
+              opacity: 0.6,
+            },
+            {
+              scale: 1,
+              opacity: 1,
+              scrollTrigger: {
+                trigger: card,
+                containerAnimation: horizontalScroll,
+                start: "left right",
+                end: "center center",
+                scrub: 1,
+              },
+            }
+          );
+
+          // Zoom out as card exits center
+          gsap.fromTo(
+            card,
+            {
+              scale: 1,
+              opacity: 1,
+            },
+            {
+              scale: 0.85,
+              opacity: 0.6,
+              scrollTrigger: {
+                trigger: card,
+                containerAnimation: horizontalScroll,
+                start: "center center",
+                end: "right left",
+                scrub: 1,
+              },
+            }
+          );
+        });
+
+        // Traveling element - progress tracker
+        if (trackerRef.current) {
+          gsap.to(trackerRef.current, {
+            width: "100%",
+            scrollTrigger: {
+              trigger: cardsContainerRef.current,
+              start: "top top",
+              end: () => "+=" + cardsContainerRef.current!.offsetWidth * 2,
+              scrub: 1,
+            },
+          });
+        }
+      });
+
+      return () => mm.revert();
     },
     { scope: sectionRef, dependencies: [] }
   );
@@ -155,45 +204,58 @@ export function Projects() {
             className="text-lg md:text-xl text-slate-300 max-w-3xl mx-auto font-light mt-4 md:mt-10"
           >
             Following projects showcase my skills through real-world examples.
-            Click cards to flip and see details!
+            <span className="md:hidden">
+              {" "}
+              Tap cards to flip and see details!
+            </span>
+            <span className="hidden md:inline">
+              {" "}
+              Hover over cards to flip and see details!
+            </span>
           </p>
         </div>
       </div>
 
-      {/* Horizontal Scrolling Cards Container */}
+      {/* Cards Container - Horizontal scroll on desktop, vertical stack on mobile */}
       <div
         ref={cardsContainerRef}
-        className="relative h-screen flex items-center"
+        className="relative md:h-screen flex items-center pb-20 md:pb-0"
       >
-        <div className="flex gap-8 px-6 md:px-12">
+        <div className="flex flex-col md:flex-row gap-8 px-6 md:px-12 w-full md:w-auto">
           {projects.map((project) => {
             const isFlipped = hoveredCard === project.id;
 
             return (
               <div
                 key={project.id}
-                className="project-card shrink-0 w-[85vw] md:w-125 group"
+                className="project-card shrink-0 w-full md:w-125 group"
                 style={{
                   perspective: "2000px",
                 }}
                 onMouseEnter={() => setHoveredCard(project.id)}
                 onMouseLeave={() => setHoveredCard(null)}
+                onClick={() =>
+                  setHoveredCard(hoveredCard === project.id ? null : project.id)
+                }
               >
                 {/* 3D Flip Card Container */}
                 <div
                   className="relative w-full h-150 transition-transform duration-700 ease-out"
                   style={{
                     transformStyle: "preserve-3d",
+                    WebkitTransformStyle: "preserve-3d",
                     transform: isFlipped ? "rotateY(180deg)" : "rotateY(0deg)",
                   }}
                 >
                   {/* FRONT of Card */}
                   <div
-                    className="absolute inset-0 rounded-3xl bg-slate-950 border-2 border-slate-800 overflow-hidden"
+                    className="absolute inset-0 rounded-3xl bg-slate-950 border-2 border-slate-800 overflow-hidden transition-opacity duration-700"
                     style={{
                       backfaceVisibility: "hidden",
                       WebkitBackfaceVisibility: "hidden",
                       pointerEvents: isFlipped ? "none" : "auto",
+                      opacity: isFlipped ? 0 : 1,
+                      zIndex: isFlipped ? 1 : 2,
                     }}
                   >
                     {/* Gradient overlay */}
@@ -237,7 +299,10 @@ export function Projects() {
 
                       {/* Flip Indicator */}
                       <div className="text-center text-slate-500 text-sm font-medium mt-auto">
-                        Hover to see details →
+                        <span className="md:hidden">Tap to see details →</span>
+                        <span className="hidden md:inline">
+                          Hover to see details →
+                        </span>
                       </div>
                     </div>
 
@@ -249,12 +314,14 @@ export function Projects() {
 
                   {/* BACK of Card */}
                   <div
-                    className="absolute inset-0 rounded-3xl bg-slate-950 border-2 border-purple-500 overflow-hidden"
+                    className="absolute inset-0 rounded-3xl bg-slate-950 border-2 border-purple-500 overflow-hidden transition-opacity duration-700"
                     style={{
                       backfaceVisibility: "hidden",
                       WebkitBackfaceVisibility: "hidden",
                       transform: "rotateY(180deg)",
                       pointerEvents: isFlipped ? "auto" : "none",
+                      opacity: isFlipped ? 1 : 0,
+                      zIndex: isFlipped ? 2 : 1,
                     }}
                   >
                     {/* Gradient overlay */}
@@ -353,7 +420,12 @@ export function Projects() {
 
                       {/* Flip back indicator */}
                       <div className="text-center text-slate-500 text-sm font-medium mt-4">
-                        Move away to flip back
+                        <span className="md:hidden">
+                          Tap again to flip back
+                        </span>
+                        <span className="hidden md:inline">
+                          Move away to flip back
+                        </span>
                       </div>
                     </div>
                   </div>

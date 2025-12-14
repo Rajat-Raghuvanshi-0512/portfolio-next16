@@ -22,164 +22,238 @@ export function WorkExperience() {
       const cards =
         cardsContainerRef.current.querySelectorAll(".experience-card");
       const dots = cardsContainerRef.current.querySelectorAll(".timeline-dot");
+      const mm = gsap.matchMedia();
 
-      // Heading entrance
-      gsap.from(headingRef.current, {
-        scrollTrigger: {
-          trigger: headingRef.current,
-          start: "top 100%",
-          end: "top 70%",
-          scrub: 1,
-        },
-        opacity: 0,
-        y: 100,
-        scale: 0.9,
-      });
-
-      // Description entrance
-      gsap.from(descriptionRef.current, {
-        scrollTrigger: {
-          trigger: descriptionRef.current,
-          start: "top 80%",
-          end: "top 50%",
-          scrub: 1,
-        },
-        opacity: 0,
-        y: 50,
-        scale: 0.95,
-      });
-
-      // Timeline line draws progressively as user scrolls
-      if (timelineLineRef.current) {
-        gsap.fromTo(
-          timelineLineRef.current,
-          {
-            scaleY: 0,
-          },
-          {
-            scaleY: 1,
-            transformOrigin: "top",
-            ease: "none",
-            scrollTrigger: {
-              trigger: cardsContainerRef.current,
-              start: "top 60%",
-              end: "bottom 80%",
-              scrub: 1,
-            },
-          }
-        );
-      }
-
-      // Each card animates independently as it comes into view
-      cards.forEach((card, index) => {
-        const side = experiences[index].side;
-        const dot = dots[index];
-
-        // Create a timeline for each card
-        const cardTimeline = gsap.timeline({
+      // Mobile: Simple animations without timeline effects
+      mm.add("(max-width: 767px)", () => {
+        // Simple heading entrance
+        gsap.from(headingRef.current, {
           scrollTrigger: {
-            trigger: card,
-            start: "top 70%",
-            end: "top 30%",
-            toggleActions: "play none none reverse",
+            trigger: headingRef.current,
+            start: "top 80%",
+            toggleActions: "play none none none",
           },
-        });
-
-        // Card entrance
-        cardTimeline.from(card, {
           opacity: 0,
-          x: side === "left" ? -200 : 200,
-          rotateY: side === "left" ? -30 : 30,
+          y: 30,
           duration: 0.8,
-          ease: "power3.out",
+          ease: "power2.out",
         });
 
-        // Dot pulse animation
-        cardTimeline.from(
-          dot,
-          {
-            scale: 0,
-            duration: 0.4,
-            ease: "back.out(2)",
+        // Simple description entrance
+        gsap.from(descriptionRef.current, {
+          scrollTrigger: {
+            trigger: descriptionRef.current,
+            start: "top 80%",
+            toggleActions: "play none none none",
           },
-          "-=0.6"
-        );
+          opacity: 0,
+          y: 30,
+          duration: 0.8,
+          ease: "power2.out",
+        });
 
-        // Sequential animation: Company -> Role -> Period -> Description
-        const company = card.querySelector(".experience-company");
-        const role = card.querySelector(".experience-role");
-        const period = card.querySelector(".experience-period");
-        const listItems = card.querySelectorAll(".li-item");
-
-        // Company name appears first
-        cardTimeline.from(
-          company,
-          {
+        // Simple card animations without side movements
+        cards.forEach((card) => {
+          gsap.from(card, {
+            scrollTrigger: {
+              trigger: card,
+              start: "top 80%",
+              toggleActions: "play none none none",
+            },
             opacity: 0,
-            y: 20,
-            duration: 0.5,
-            ease: "power2.out",
-          },
-          "-=0.5"
-        );
-
-        // Role appears after company
-        cardTimeline.from(
-          role,
-          {
-            opacity: 0,
-            y: 20,
-            duration: 0.5,
-            ease: "power2.out",
-          },
-          "-=0.3"
-        );
-
-        // Period appears after role
-        cardTimeline.from(
-          period,
-          {
-            opacity: 0,
-            y: 20,
-            duration: 0.4,
-            ease: "power2.out",
-          },
-          "-=0.3"
-        );
-
-        // List items (description) stagger after period
-        cardTimeline.from(
-          listItems,
-          {
-            opacity: 0,
-            x: side === "left" ? -30 : 30,
-            stagger: 0.15,
-            duration: 0.5,
-          },
-          "-=0.2"
-        );
-      });
-
-      // Individual card hover animations
-      cards.forEach((card) => {
-        card.addEventListener("mouseenter", () => {
-          gsap.to(card, {
-            scale: 1.05,
-            y: -10,
-            duration: 0.3,
+            y: 50,
+            duration: 0.8,
             ease: "power2.out",
           });
+
+          // Animate card content
+          const company = card.querySelector(".experience-company");
+          const role = card.querySelector(".experience-role");
+          const period = card.querySelector(".experience-period");
+          const listItems = card.querySelectorAll(".li-item");
+
+          const contentTimeline = gsap.timeline({
+            scrollTrigger: {
+              trigger: card,
+              start: "top 70%",
+              toggleActions: "play none none none",
+            },
+          });
+
+          contentTimeline
+            .from(company, { opacity: 0, y: 20, duration: 0.4 })
+            .from(role, { opacity: 0, y: 20, duration: 0.4 }, "-=0.2")
+            .from(period, { opacity: 0, y: 20, duration: 0.3 }, "-=0.2")
+            .from(
+              listItems,
+              { opacity: 0, y: 20, stagger: 0.1, duration: 0.4 },
+              "-=0.1"
+            );
+        });
+      });
+
+      // Desktop: Complex animations with timeline
+      mm.add("(min-width: 768px)", () => {
+        // Heading entrance
+        gsap.from(headingRef.current, {
+          scrollTrigger: {
+            trigger: headingRef.current,
+            start: "top 100%",
+            end: "top 70%",
+            scrub: 1,
+          },
+          opacity: 0,
+          y: 100,
+          scale: 0.9,
         });
 
-        card.addEventListener("mouseleave", () => {
-          gsap.to(card, {
-            scale: 1,
-            y: 0,
-            duration: 0.3,
-            ease: "power2.out",
+        // Description entrance
+        gsap.from(descriptionRef.current, {
+          scrollTrigger: {
+            trigger: descriptionRef.current,
+            start: "top 80%",
+            end: "top 50%",
+            scrub: 1,
+          },
+          opacity: 0,
+          y: 50,
+          scale: 0.95,
+        });
+
+        // Timeline line draws progressively as user scrolls
+        if (timelineLineRef.current) {
+          gsap.fromTo(
+            timelineLineRef.current,
+            {
+              scaleY: 0,
+            },
+            {
+              scaleY: 1,
+              transformOrigin: "top",
+              ease: "none",
+              scrollTrigger: {
+                trigger: cardsContainerRef.current,
+                start: "top 60%",
+                end: "bottom 80%",
+                scrub: 1,
+              },
+            }
+          );
+        }
+
+        // Each card animates independently as it comes into view
+        cards.forEach((card, index) => {
+          const side = experiences[index].side;
+          const dot = dots[index];
+
+          // Create a timeline for each card
+          const cardTimeline = gsap.timeline({
+            scrollTrigger: {
+              trigger: card,
+              start: "top 70%",
+              end: "top 30%",
+              toggleActions: "play none none reverse",
+            },
+          });
+
+          // Card entrance
+          cardTimeline.from(card, {
+            opacity: 0,
+            x: side === "left" ? -200 : 200,
+            rotateY: side === "left" ? -30 : 30,
+            duration: 0.8,
+            ease: "power3.out",
+          });
+
+          // Dot pulse animation
+          cardTimeline.from(
+            dot,
+            {
+              scale: 0,
+              duration: 0.4,
+              ease: "back.out(2)",
+            },
+            "-=0.6"
+          );
+
+          // Sequential animation: Company -> Role -> Period -> Description
+          const company = card.querySelector(".experience-company");
+          const role = card.querySelector(".experience-role");
+          const period = card.querySelector(".experience-period");
+          const listItems = card.querySelectorAll(".li-item");
+
+          // Company name appears first
+          cardTimeline.from(
+            company,
+            {
+              opacity: 0,
+              y: 20,
+              duration: 0.5,
+              ease: "power2.out",
+            },
+            "-=0.5"
+          );
+
+          // Role appears after company
+          cardTimeline.from(
+            role,
+            {
+              opacity: 0,
+              y: 20,
+              duration: 0.5,
+              ease: "power2.out",
+            },
+            "-=0.3"
+          );
+
+          // Period appears after role
+          cardTimeline.from(
+            period,
+            {
+              opacity: 0,
+              y: 20,
+              duration: 0.4,
+              ease: "power2.out",
+            },
+            "-=0.3"
+          );
+
+          // List items (description) stagger after period
+          cardTimeline.from(
+            listItems,
+            {
+              opacity: 0,
+              x: side === "left" ? -30 : 30,
+              stagger: 0.15,
+              duration: 0.5,
+            },
+            "-=0.2"
+          );
+        });
+
+        // Individual card hover animations
+        cards.forEach((card) => {
+          card.addEventListener("mouseenter", () => {
+            gsap.to(card, {
+              scale: 1.05,
+              y: -10,
+              duration: 0.3,
+              ease: "power2.out",
+            });
+          });
+
+          card.addEventListener("mouseleave", () => {
+            gsap.to(card, {
+              scale: 1,
+              y: 0,
+              duration: 0.3,
+              ease: "power2.out",
+            });
           });
         });
       });
+
+      return () => mm.revert();
     },
     { scope: sectionRef, dependencies: [] }
   );
@@ -258,20 +332,8 @@ export function WorkExperience() {
                     }`}
                     style={{ transformStyle: "preserve-3d" }}
                   >
-                    {/* Connecting Line (Mobile) */}
-                    <div className="md:hidden absolute left-6 top-0 bottom-0 w-0.5 bg-linear-to-b from-blue-500 via-purple-500 to-pink-500" />
-
                     {/* Card */}
-                    <div className="relative group ml-16 md:ml-0">
-                      {/* Mobile Dot */}
-                      <div className="absolute -left-18 top-6 md:hidden">
-                        <div
-                          className={`w-8 h-8 rounded-full bg-linear-to-br ${exp.color} border-4 border-slate-900 flex items-center justify-center text-lg`}
-                        >
-                          {exp.icon}
-                        </div>
-                      </div>
-
+                    <div className="relative group ml-0">
                       <div className="relative rounded-2xl bg-slate-950/80 backdrop-blur-sm border border-slate-800 p-6 md:p-8 overflow-hidden transition-all duration-300">
                         {/* Gradient overlay */}
                         <div

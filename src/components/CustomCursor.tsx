@@ -3,79 +3,92 @@
 import { useRef, useEffect, useState } from "react";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
-import { useIsMobile } from "@/hooks/useIsMobile";
 
 export function CustomCursor() {
-  const isMobile = useIsMobile();
   const cursorRef = useRef<HTMLDivElement>(null);
   const cursorDotRef = useRef<HTMLDivElement>(null);
   const lensRef = useRef<HTMLDivElement>(null);
   const [isPointer, setIsPointer] = useState(false);
-  const [isHidden, setIsHidden] = useState(false);
   const mousePos = useRef({ x: 0, y: 0 });
 
-  // Smooth cursor follow with magnetic effect
+  // Initialize with touch device check
+  const [isTouchDevice] = useState(() => {
+    if (typeof window === "undefined") return false;
+    return "ontouchstart" in window || navigator.maxTouchPoints > 0;
+  });
+
+  // Hide cursor on touch devices
+  const [isHidden, setIsHidden] = useState(isTouchDevice);
+
+  // Smooth cursor follow with magnetic effect - only on desktop
   useGSAP(() => {
     if (!cursorRef.current || !cursorDotRef.current || !lensRef.current) return;
 
     const cursor = cursorRef.current;
     const dot = cursorDotRef.current;
     const lens = lensRef.current;
+    const mm = gsap.matchMedia();
 
-    const moveCursor = (e: MouseEvent) => {
-      mousePos.current = { x: e.clientX, y: e.clientY };
+    // Only enable cursor on desktop (768px and above)
+    mm.add("(min-width: 768px)", () => {
+      const moveCursor = (e: MouseEvent) => {
+        mousePos.current = { x: e.clientX, y: e.clientY };
 
-      let targetX = e.clientX;
-      let targetY = e.clientY;
+        let targetX = e.clientX;
+        let targetY = e.clientY;
 
-      // Magnetic effect for buttons
-      const hoveredButton = document.elementFromPoint(e.clientX, e.clientY);
-      if (
-        hoveredButton &&
-        (hoveredButton.tagName === "BUTTON" || hoveredButton.closest("button"))
-      ) {
-        const button = (
-          hoveredButton.tagName === "BUTTON"
-            ? hoveredButton
-            : hoveredButton.closest("button")
-        ) as HTMLElement;
-        const rect = button.getBoundingClientRect();
-        const buttonCenterX = rect.left + rect.width / 2;
-        const buttonCenterY = rect.top + rect.height / 2;
+        // Magnetic effect for buttons
+        const hoveredButton = document.elementFromPoint(e.clientX, e.clientY);
+        if (
+          hoveredButton &&
+          (hoveredButton.tagName === "BUTTON" ||
+            hoveredButton.closest("button"))
+        ) {
+          const button = (
+            hoveredButton.tagName === "BUTTON"
+              ? hoveredButton
+              : hoveredButton.closest("button")
+          ) as HTMLElement;
+          const rect = button.getBoundingClientRect();
+          const buttonCenterX = rect.left + rect.width / 2;
+          const buttonCenterY = rect.top + rect.height / 2;
 
-        // Pull cursor slightly towards button center
-        const pullStrength = 0.3;
-        targetX += (buttonCenterX - e.clientX) * pullStrength;
-        targetY += (buttonCenterY - e.clientY) * pullStrength;
-      }
+          // Pull cursor slightly towards button center
+          const pullStrength = 0.3;
+          targetX += (buttonCenterX - e.clientX) * pullStrength;
+          targetY += (buttonCenterY - e.clientY) * pullStrength;
+        }
 
-      gsap.to(cursor, {
-        x: targetX,
-        y: targetY,
-        duration: 0.5,
-        ease: "power2.out",
-      });
+        gsap.to(cursor, {
+          x: targetX,
+          y: targetY,
+          duration: 0.5,
+          ease: "power2.out",
+        });
 
-      gsap.to(dot, {
-        x: e.clientX,
-        y: e.clientY,
-        duration: 0.1,
-      });
+        gsap.to(dot, {
+          x: e.clientX,
+          y: e.clientY,
+          duration: 0.1,
+        });
 
-      // Lens follows with slight delay for depth effect
-      gsap.to(lens, {
-        x: e.clientX,
-        y: e.clientY,
-        duration: 0.6,
-        ease: "power2.out",
-      });
-    };
+        // Lens follows with slight delay for depth effect
+        gsap.to(lens, {
+          x: e.clientX,
+          y: e.clientY,
+          duration: 0.6,
+          ease: "power2.out",
+        });
+      };
 
-    window.addEventListener("mousemove", moveCursor);
+      window.addEventListener("mousemove", moveCursor);
 
-    return () => {
-      window.removeEventListener("mousemove", moveCursor);
-    };
+      return () => {
+        window.removeEventListener("mousemove", moveCursor);
+      };
+    });
+
+    return () => mm.revert();
   });
 
   // Handle hover states
@@ -128,57 +141,54 @@ export function CustomCursor() {
     };
   }, []);
 
-  // Animate cursor and lens state changes
+  // Animate cursor and lens state changes - only on desktop
   useGSAP(() => {
     if (!cursorRef.current || !lensRef.current) return;
 
-    // Main cursor becomes smaller when hovering
-    gsap.to(cursorRef.current, {
-      scale: isPointer ? 0.3 : 1,
-      opacity: isPointer ? 0.5 : 1,
-      duration: 0.3,
-      ease: "power2.out",
+    const mm = gsap.matchMedia();
+
+    mm.add("(min-width: 768px)", () => {
+      // Main cursor becomes smaller when hovering
+      gsap.to(cursorRef.current, {
+        scale: isPointer ? 0.3 : 1,
+        opacity: isPointer ? 0.5 : 1,
+        duration: 0.3,
+        ease: "power2.out",
+      });
+
+      // Magnifying lens appears when hovering with bounce effect
+      gsap.to(lensRef.current, {
+        scale: isPointer ? 1 : 0,
+        opacity: isPointer ? 1 : 0,
+        duration: 0.5,
+        ease: "elastic.out(1, 0.5)",
+      });
     });
 
-    // Magnifying lens appears when hovering with bounce effect
-    gsap.to(lensRef.current, {
-      scale: isPointer ? 1 : 0,
-      opacity: isPointer ? 1 : 0,
-      duration: 0.5,
-      ease: "elastic.out(1, 0.5)",
-    });
+    return () => mm.revert();
   }, [isPointer]);
 
   useGSAP(() => {
     if (!cursorRef.current) return;
 
-    gsap.to(cursorRef.current, {
-      opacity: isHidden ? 0 : 1,
-      duration: 0.2,
+    const mm = gsap.matchMedia();
+
+    mm.add("(min-width: 768px)", () => {
+      gsap.to(cursorRef.current, {
+        opacity: isHidden ? 0 : 1,
+        duration: 0.2,
+      });
     });
+
+    return () => mm.revert();
   }, [isHidden]);
-
-  // Don't show on mobile/touch devices
-  useEffect(() => {
-    const isTouchDevice =
-      "ontouchstart" in window || navigator.maxTouchPoints > 0;
-    if (isTouchDevice || isMobile) {
-      // eslint-disable-next-line
-      setIsHidden(true);
-    }
-  }, [isMobile]);
-
-  // Don't render at all on mobile
-  if (isMobile) {
-    return null;
-  }
 
   return (
     <>
       {/* Main Cursor Circle */}
       <div
         ref={cursorRef}
-        className="fixed top-0 left-0 w-10 h-10 pointer-events-none z-9999 mix-blend-difference"
+        className="fixed top-0 left-0 w-10 h-10 pointer-events-none z-9999 mix-blend-difference hidden md:block"
         style={{
           transform: "translate(-50%, -50%)",
         }}
@@ -196,7 +206,7 @@ export function CustomCursor() {
       {/* Cursor Dot */}
       <div
         ref={cursorDotRef}
-        className="fixed top-0 left-0 w-2 h-2 pointer-events-none z-9999 mix-blend-difference"
+        className="fixed top-0 left-0 w-2 h-2 pointer-events-none z-9999 mix-blend-difference hidden md:block"
         style={{
           transform: "translate(-50%, -50%)",
         }}
@@ -207,7 +217,7 @@ export function CustomCursor() {
       {/* Magnifying Lens with Spotlight Effect */}
       <div
         ref={lensRef}
-        className="fixed top-0 left-0 w-28 h-28 pointer-events-none z-9998"
+        className="fixed top-0 left-0 w-28 h-28 pointer-events-none z-9998 hidden md:block"
         style={{
           transform: "translate(-50%, -50%) scale(0)",
           opacity: 0,

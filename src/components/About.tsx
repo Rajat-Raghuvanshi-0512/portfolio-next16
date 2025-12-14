@@ -21,149 +21,260 @@ export function About() {
       if (!sectionRef.current) return;
 
       const cards = cardsContainerRef.current?.querySelectorAll(".skill-card");
-
-      // Main timeline with pinning - starts earlier for smooth transition
-      const mainTl = gsap.timeline({
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top top",
-          end: "+=3000",
-          scrub: 1,
-          pin: true,
-          anticipatePin: 1,
-        },
-      });
-
-      // Stage 1: Fade in heading
-      mainTl.from(headingRef.current, {
-        scrollTrigger: {
-          trigger: headingRef.current,
-          start: "top 100%",
-          end: "top 60%",
-          scrub: 1,
-        },
-        opacity: 0,
-        y: 100,
-        scale: 0.8,
-        duration: 1,
-      });
-
-      // Stage 2: Description slides in
-      mainTl.from(
-        descriptionRef.current,
-        {
-          scrollTrigger: {
-            trigger: headingRef.current,
-            start: "top 80%",
-            end: "top 50%",
-            scrub: 1,
-          },
-          opacity: 0,
-          y: 50,
-          duration: 1,
-        },
-        "+=0.3"
-      );
-
-      // Stage 3: Stats counter animation
-      mainTl.from(
-        statsRef.current,
-        {
-          scrollTrigger: {
-            trigger: statsRef.current,
-            start: "top 60%",
-            end: "top 40%",
-            scrub: 1,
-          },
-          opacity: 0,
-          scale: 0.8,
-          duration: 1,
-        },
-        "+=0.3"
-      );
-
-      // Stage 4: 3D cards entrance
-      if (cards && cards.length > 0) {
-        mainTl.from(
-          cards,
-          {
-            scrollTrigger: {
-              trigger: cards,
-              start: "top 80%",
-              scrub: 1,
-            },
-            opacity: 0,
-            y: 200,
-            rotateX: -90,
-            stagger: 0.2,
-            duration: 1,
-            ease: "back.out(1.7)",
-          },
-          "+=0.5"
-        );
-
-        // Stage 5: Rotate cards for 3D effect
-        mainTl.to(
-          cards,
-          {
-            rotateY: 360,
-            stagger: 0.15,
-            duration: 1.5,
-            ease: "power2.inOut",
-          },
-          "+=0.3"
-        );
-      }
-
-      // Animate number counters
       const yearsElement = document.querySelector(".years-count");
       const projectsElement = document.querySelector(".projects-count");
 
-      if (yearsElement) {
-        ScrollTrigger.create({
-          trigger: statsRef.current,
-          start: "top 80%",
-          onEnter: () => {
-            gsap.from(yearsElement, {
-              textContent: 0,
-              duration: 2,
-              ease: "power1.inOut",
-              snap: { textContent: 1 },
-              onUpdate: function () {
-                if (yearsElement instanceof HTMLElement) {
-                  yearsElement.textContent = Math.ceil(
-                    parseFloat(yearsElement.textContent || "0")
-                  ).toString();
-                }
-              },
-            });
-          },
-          once: true,
-        });
-      }
+      const mm = gsap.matchMedia();
 
-      if (projectsElement) {
-        ScrollTrigger.create({
-          trigger: statsRef.current,
-          start: "top 80%",
-          onEnter: () => {
-            gsap.from(projectsElement, {
-              textContent: 0,
-              duration: 2.5,
-              ease: "power1.inOut",
-              snap: { textContent: 1 },
-              onUpdate: function () {
-                if (projectsElement instanceof HTMLElement) {
-                  projectsElement.textContent = Math.ceil(
-                    parseFloat(projectsElement.textContent || "0")
-                  ).toString();
-                }
-              },
-            });
+      // Mobile animations (below 768px)
+      mm.add("(max-width: 767px)", () => {
+        // Simple fade in heading
+        gsap.from(headingRef.current, {
+          scrollTrigger: {
+            trigger: headingRef.current,
+            start: "top 80%",
+            toggleActions: "play none none none",
           },
-          once: true,
+          opacity: 0,
+          y: 30,
+          duration: 0.8,
+          ease: "power2.out",
         });
-      }
+
+        // Fade in description
+        gsap.from(descriptionRef.current, {
+          scrollTrigger: {
+            trigger: descriptionRef.current,
+            start: "top 80%",
+            toggleActions: "play none none none",
+          },
+          opacity: 0,
+          y: 30,
+          duration: 0.8,
+          ease: "power2.out",
+        });
+
+        // Fade in stats
+        gsap.from(statsRef.current, {
+          scrollTrigger: {
+            trigger: statsRef.current,
+            start: "top 80%",
+            toggleActions: "play none none none",
+          },
+          opacity: 0,
+          y: 30,
+          duration: 0.8,
+          ease: "power2.out",
+        });
+
+        // Simple fade in for cards
+        if (cards && cards.length > 0) {
+          gsap.from(cards, {
+            scrollTrigger: {
+              trigger: cardsContainerRef.current,
+              start: "top 80%",
+              toggleActions: "play none none none",
+            },
+            opacity: 0,
+            y: 40,
+            stagger: 0.1,
+            duration: 0.6,
+            ease: "power2.out",
+          });
+        }
+
+        // Counter animations
+        if (yearsElement) {
+          ScrollTrigger.create({
+            trigger: statsRef.current,
+            start: "top 80%",
+            onEnter: () => {
+              gsap.from(yearsElement, {
+                textContent: 0,
+                duration: 1.5,
+                ease: "power1.inOut",
+                snap: { textContent: 1 },
+                onUpdate: function () {
+                  if (yearsElement instanceof HTMLElement) {
+                    yearsElement.textContent = Math.ceil(
+                      parseFloat(yearsElement.textContent || "0")
+                    ).toString();
+                  }
+                },
+              });
+            },
+            once: true,
+          });
+        }
+
+        if (projectsElement) {
+          ScrollTrigger.create({
+            trigger: statsRef.current,
+            start: "top 80%",
+            onEnter: () => {
+              gsap.from(projectsElement, {
+                textContent: 0,
+                duration: 2,
+                ease: "power1.inOut",
+                snap: { textContent: 1 },
+                onUpdate: function () {
+                  if (projectsElement instanceof HTMLElement) {
+                    projectsElement.textContent = Math.ceil(
+                      parseFloat(projectsElement.textContent || "0")
+                    ).toString();
+                  }
+                },
+              });
+            },
+            once: true,
+          });
+        }
+      });
+
+      // Desktop animations (768px and above)
+      mm.add("(min-width: 768px)", () => {
+        // Main timeline with pinning
+        const mainTl = gsap.timeline({
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: "top top",
+            end: "+=3000",
+            scrub: 1,
+            pin: true,
+            anticipatePin: 1,
+          },
+        });
+
+        // Stage 1: Fade in heading
+        mainTl.from(headingRef.current, {
+          scrollTrigger: {
+            trigger: headingRef.current,
+            start: "top 100%",
+            end: "top 60%",
+            scrub: 1,
+          },
+          opacity: 0,
+          y: 100,
+          scale: 0.8,
+          duration: 1,
+        });
+
+        // Stage 2: Description slides in
+        mainTl.from(
+          descriptionRef.current,
+          {
+            scrollTrigger: {
+              trigger: headingRef.current,
+              start: "top 80%",
+              end: "top 50%",
+              scrub: 1,
+            },
+            opacity: 0,
+            y: 50,
+            duration: 1,
+          },
+          "+=0.3"
+        );
+
+        // Stage 3: Stats counter animation
+        mainTl.from(
+          statsRef.current,
+          {
+            scrollTrigger: {
+              trigger: statsRef.current,
+              start: "top 60%",
+              end: "top 40%",
+              scrub: 1,
+            },
+            opacity: 0,
+            scale: 0.8,
+            duration: 1,
+          },
+          "+=0.3"
+        );
+
+        // Stage 4: 3D cards entrance
+        if (cards && cards.length > 0) {
+          mainTl.from(
+            cards,
+            {
+              scrollTrigger: {
+                trigger: cards,
+                start: "top 80%",
+                scrub: 1,
+              },
+              opacity: 0,
+              y: 200,
+              rotateX: -90,
+              stagger: 0.2,
+              duration: 1,
+              ease: "back.out(1.7)",
+            },
+            "+=0.5"
+          );
+
+          // Stage 5: Rotate cards for 3D effect
+          mainTl.to(
+            cards,
+            {
+              rotateY: 360,
+              stagger: 0.15,
+              duration: 1.5,
+              ease: "power2.inOut",
+            },
+            "+=0.3"
+          );
+        }
+
+        // Counter animations for desktop
+        if (yearsElement) {
+          ScrollTrigger.create({
+            trigger: statsRef.current,
+            start: "top 80%",
+            onEnter: () => {
+              gsap.from(yearsElement, {
+                textContent: 0,
+                duration: 2,
+                ease: "power1.inOut",
+                snap: { textContent: 1 },
+                onUpdate: function () {
+                  if (yearsElement instanceof HTMLElement) {
+                    yearsElement.textContent = Math.ceil(
+                      parseFloat(yearsElement.textContent || "0")
+                    ).toString();
+                  }
+                },
+              });
+            },
+            once: true,
+          });
+        }
+
+        if (projectsElement) {
+          ScrollTrigger.create({
+            trigger: statsRef.current,
+            start: "top 80%",
+            onEnter: () => {
+              gsap.from(projectsElement, {
+                textContent: 0,
+                duration: 2.5,
+                ease: "power1.inOut",
+                snap: { textContent: 1 },
+                onUpdate: function () {
+                  if (projectsElement instanceof HTMLElement) {
+                    projectsElement.textContent = Math.ceil(
+                      parseFloat(projectsElement.textContent || "0")
+                    ).toString();
+                  }
+                },
+              });
+            },
+            once: true,
+          });
+        }
+      });
+
+      return () => mm.revert();
     },
     { scope: sectionRef, dependencies: [] }
   );
