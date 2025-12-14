@@ -7,6 +7,7 @@ export interface Project {
   image: string;
   codeLink: string;
   websiteLink: string;
+  isComplete?: boolean;
   details: {
     features: string[];
     role: string;
@@ -17,70 +18,50 @@ export interface Project {
 export const projects: Project[] = [
   {
     id: 1,
-    title: "Shop Buddy",
-    category: "MERN Stack",
+    title: "Jira Clone",
+    category: "Next.js",
     description:
-      "Shop Buddy is an attempt to serve the people of India with unique designs on apparels. E-commerce is revolutionising the way we all shop in India.",
-    tech: ["React", "MongoDB", "Node.js", "Express"],
-    image: "🛍️",
-    codeLink: "https://github.com/Rajat-Raghuvanshi-0512/MERN-Ecommerce",
-    websiteLink: "https://shop-buddy.onrender.com/",
+      "Project management and task tracking platform inspired by Jira. Monitor all your tasks and projects in one place with workspace organization and team collaboration features.",
+    tech: ["Next.js", "React", "TypeScript", "Tailwind CSS"],
+    image: "📋",
+    codeLink: "https://github.com/Rajat-Raghuvanshi-0512/jira-clone",
+    websiteLink:
+      "https://jira-clone-gold-seven.vercel.app/workspaces/6935c8530023df57a4d2",
+    isComplete: false,
     details: {
       features: [
-        "Full-featured shopping cart",
-        "Product reviews and ratings",
-        "Admin panel for product management",
-        "Payment gateway integration",
+        "Task and project management",
+        "Workspace organization",
+        "Team collaboration tools",
+        "Progress tracking dashboard",
       ],
       role: "Full-stack Developer",
-      year: "2023",
+      year: "2025",
     },
   },
   {
     id: 2,
-    title: "Voyage Tours",
+    title: "Duolingo Clone",
     category: "Next.js",
     description:
-      "With Voyage, businesses may save money and offer convenience to their clients. Also, 'community chat' has been added for the user to find a travel companion.",
-    tech: ["React.js", "Heroku", "Node.js", "Socket.io"],
-    image: "✈️",
-    codeLink:
-      "https://github.com/Rajat-Raghuvanshi-0512/voyage-tours-and-travels",
-    websiteLink: "https://voyage-tours.netlify.app/",
+      "Interactive language learning platform inspired by Duolingo. Learn, practice and master new languages with gamified lessons and progress tracking.",
+    tech: ["Next.js", "React", "TypeScript", "Tailwind CSS"],
+    image: "🦜",
+    codeLink: "https://github.com/Rajat-Raghuvanshi-0512/duolingo-clone",
+    websiteLink: "https://duolingo-clone-dusky.vercel.app/",
     details: {
       features: [
-        "Real-time community chat",
-        "Tour booking system",
-        "Travel companion matching",
-        "Interactive destination explorer",
+        "Interactive language lessons",
+        "Progress tracking system",
+        "Gamified learning experience",
+        "Multiple language support",
       ],
-      role: "Lead Developer",
-      year: "2023",
+      role: "Full-stack Developer",
+      year: "2025",
     },
   },
   {
     id: 3,
-    title: "Timmy's Mowing",
-    category: "Next.js",
-    description:
-      "Modern lawn care service platform with beautiful UI and seamless booking experience for customers.",
-    tech: ["Next.js", "Tailwind CSS", "TypeScript"],
-    image: "🌿",
-    codeLink: "https://github.com/Rajat-Raghuvanshi-0512/timmy-mowing",
-    websiteLink: "https://timmy-mowing.vercel.app/",
-    details: {
-      features: [
-        "Online booking system",
-        "Service scheduling",
-        "Customer reviews",
-        "Responsive design",
-      ],
-      role: "Frontend Developer",
-      year: "2024",
-    },
-  },
-  {
-    id: 4,
     title: "Pare India",
     category: "Next.js",
     description:
@@ -97,6 +78,27 @@ export const projects: Project[] = [
         "Service showcase",
       ],
       role: "Full-stack Developer",
+      year: "2023",
+    },
+  },
+  {
+    id: 4,
+    title: "Timmy's Mowing",
+    category: "Next.js",
+    description:
+      "Modern lawn care service platform with beautiful UI and seamless booking experience for customers.",
+    tech: ["Next.js", "Tailwind CSS", "TypeScript"],
+    image: "🌿",
+    codeLink: "https://github.com/Rajat-Raghuvanshi-0512/timmy-mowing",
+    websiteLink: "https://timmy-mowing.vercel.app/",
+    details: {
+      features: [
+        "Online booking system",
+        "Service scheduling",
+        "Customer reviews",
+        "Responsive design",
+      ],
+      role: "Frontend Developer",
       year: "2023",
     },
   },
@@ -139,7 +141,29 @@ export const projects: Project[] = [
         "Transaction history",
       ],
       role: "Blockchain Developer",
-      year: "2023",
+      year: "2022",
+    },
+  },
+  {
+    id: 4,
+    title: "Voyage Tours",
+    category: "Next.js",
+    description:
+      "With Voyage, businesses may save money and offer convenience to their clients. Also, 'community chat' has been added for the user to find a travel companion.",
+    tech: ["React.js", "Heroku", "Node.js", "Socket.io"],
+    image: "✈️",
+    codeLink:
+      "https://github.com/Rajat-Raghuvanshi-0512/voyage-tours-and-travels",
+    websiteLink: "https://voyage-tours.netlify.app/",
+    details: {
+      features: [
+        "Real-time community chat",
+        "Tour booking system",
+        "Travel companion matching",
+        "Interactive destination explorer",
+      ],
+      role: "Lead Developer",
+      year: "2021",
     },
   },
 ];

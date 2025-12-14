@@ -52,8 +52,8 @@ export function Contact() {
         gsap.from(getInTouchRef.current, {
           scrollTrigger: {
             trigger: getInTouchRef.current,
-            start: "top 50%",
-            end: "top 30%",
+            start: "top 80%",
+            end: "top 70%",
             scrub: 1,
           },
           opacity: 0,
@@ -85,8 +85,8 @@ export function Contact() {
         gsap.from(followMeRef.current, {
           scrollTrigger: {
             trigger: followMeRef.current,
-            start: "top 80%",
-            end: "top 60%",
+            start: "top 100%",
+            end: "top 70%",
             scrub: 1,
           },
           opacity: 0,

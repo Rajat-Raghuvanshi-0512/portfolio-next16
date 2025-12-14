@@ -6,7 +6,6 @@ export const experiences = [
     period: "Dec 2023 - Present",
     startDate: "Dec 2023",
     endDate: "Present",
-    icon: "💻",
     logo: "/company/hcode.png",
     description: [
       "Maintained web applications serving 200,000+ users with 45% stability improvement",
@@ -24,7 +23,6 @@ export const experiences = [
     period: "May 2023 - Nov 2023",
     startDate: "May 2023",
     endDate: "Nov 2023",
-    icon: "🎨",
     logo: "/company/pixy.webp",
     description: [
       "Developed 8+ full-stack applications with 85% client retention rate",
@@ -41,7 +39,6 @@ export const experiences = [
     period: "Nov 2022 - May 2023",
     startDate: "Nov 2022",
     endDate: "May 2023",
-    icon: "🚀",
     logo: "/company/duckcart.png",
     description: [
       "Built backend handling 50,000+ daily API requests with 99.9% uptime",
@@ -58,7 +55,6 @@ export const experiences = [
     period: "Mar 2022 - Jul 2022",
     startDate: "Mar 2022",
     endDate: "Jul 2022",
-    icon: "⚛️",
     logo: "/company/qwings.png",
     description: [
       "Learned React.js and built 5+ responsive components",
@@ -75,7 +71,6 @@ export const experiences = [
     period: "Mar 2021 - Aug 2021",
     startDate: "Mar 2021",
     endDate: "Aug 2021",
-    icon: "🌐",
     logo: "/company/avada.png",
     description: [
       "Learned HTML5, CSS3, and JavaScript fundamentals",
@@ -92,7 +87,6 @@ export const experiences = [
     period: "Oct 2020 - Dec 2020",
     startDate: "Oct 2020",
     endDate: "Dec 2020",
-    icon: "📚",
     logo: "/company/skillvertex.png",
     description: [
       "Learned MERN stack fundamentals through guided projects",

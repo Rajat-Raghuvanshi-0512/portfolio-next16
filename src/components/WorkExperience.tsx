@@ -318,7 +318,13 @@ export function WorkExperience() {
                       <div
                         className={`w-8 h-8 rounded-full bg-linear-to-br ${exp.color} border-4 border-slate-900 flex items-center justify-center text-lg shadow-lg`}
                       >
-                        {exp.icon}
+                        <Image
+                          src={exp.logo}
+                          alt={`${exp.company} logo`}
+                          width={20}
+                          height={20}
+                          className="w-4 h-4 object-contain"
+                        />
                       </div>
                     </div>
                   </div>

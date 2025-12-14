@@ -180,12 +180,12 @@ export function Hero() {
       </div>
 
       {/* Content */}
-      <div className="relative z-10 flex h-full items-center justify-center px-6 md:px-12">
+      <div className="relative z-10 flex h-svh items-center justify-center px-6 md:px-12">
         <div className="max-w-5xl text-center">
           {/* Main Title */}
           <h1
             ref={titleRef}
-            className="mb-6 text-6xl font-extrabold leading-tight tracking-tight text-white sm:text-7xl md:text-8xl lg:text-9xl"
+            className="mb-6 text-5xl font-extrabold leading-tight tracking-tight text-white sm:text-7xl md:text-8xl lg:text-9xl"
             style={{ perspective: "1000px" }}
           >
             <span className="first-name">{splitText("Rajat", false)}</span>
@@ -216,7 +216,7 @@ export function Hero() {
             ref={ctaRef}
             className="flex flex-col sm:flex-row gap-4 justify-center items-center"
           >
-            <button className="group relative px-8 py-4 bg-white text-slate-900 font-semibold text-base rounded-lg overflow-hidden transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-purple-500/50">
+            <button className="group w-full sm:w-auto relative px-8 py-4 bg-white text-slate-900 font-semibold text-base rounded-lg overflow-hidden transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-purple-500/50">
               <span
                 className="relative z-10 tracking-wide"
                 onClick={() => window.open("/resume.pdf", "_blank")}
@@ -227,7 +227,7 @@ export function Hero() {
             </button>
             <Button
               asChild
-              className="px-8 py-4 border-2 border-slate-400 text-slate-200 font-semibold text-base rounded-lg transition-all duration-300 hover:border-white hover:text-white hover:scale-105 hover:shadow-xl hover:shadow-slate-700/50 tracking-wide bg-transparent h-full hover:bg-transparent"
+              className="px-8 py-4 border-2 border-slate-400 text-slate-200 font-semibold text-base rounded-lg transition-all duration-300 hover:border-white hover:text-white hover:scale-105 hover:shadow-xl hover:shadow-slate-700/50 tracking-wide bg-transparent h-full hover:bg-transparent w-full sm:w-auto"
             >
               <Link href="#contact">Get In Touch</Link>
             </Button>

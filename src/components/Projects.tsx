@@ -263,11 +263,20 @@ export function Projects() {
 
                     {/* Content */}
                     <div className="relative z-10 p-8 h-full flex flex-col">
-                      {/* Category Badge */}
-                      <div className="mb-6">
+                      {/* Category Badge & Status */}
+                      <div className="mb-6 flex items-center justify-between flex-wrap gap-2">
                         <span className="inline-block px-4 py-2 bg-purple-500/20 text-purple-300 rounded-full text-sm font-semibold border border-purple-500/30">
                           {project.category}
                         </span>
+                        {project.isComplete === false && (
+                          <span className="inline-flex items-center gap-2 px-3 py-1.5 bg-orange-500/20 text-orange-300 rounded-full text-xs font-bold border border-orange-500/40 animate-pulse">
+                            <span className="relative flex h-2 w-2">
+                              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-orange-400 opacity-75"></span>
+                              <span className="relative inline-flex rounded-full h-2 w-2 bg-orange-500"></span>
+                            </span>
+                            IN PROGRESS
+                          </span>
+                        )}
                       </div>
 
                       {/* Emoji Icon */}
@@ -331,9 +340,20 @@ export function Projects() {
                     <div className="relative z-10 p-8 h-full flex flex-col">
                       {/* Header */}
                       <div className="mb-6">
-                        <h3 className="text-3xl font-bold text-white mb-2 tracking-tight">
-                          {project.title}
-                        </h3>
+                        <div className="flex items-start justify-between gap-2 mb-2">
+                          <h3 className="text-3xl font-bold text-white tracking-tight">
+                            {project.title}
+                          </h3>
+                          {project.isComplete === false && (
+                            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-orange-500/20 text-orange-300 rounded-full text-xs font-bold border border-orange-500/40 shrink-0">
+                              <span className="relative flex h-1.5 w-1.5">
+                                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-orange-400 opacity-75"></span>
+                                <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-orange-500"></span>
+                              </span>
+                              WIP
+                            </span>
+                          )}
+                        </div>
                         <div className="flex items-center gap-4 text-slate-400 text-sm">
                           <span className="font-medium">
                             {project.details.role}
@@ -417,6 +437,16 @@ export function Projects() {
                           View Code
                         </a>
                       </div>
+
+                      {/* Work in Progress Notice */}
+                      {project.isComplete === false && (
+                        <div className="mt-4 p-3 bg-orange-500/10 border border-orange-500/30 rounded-lg">
+                          <p className="text-orange-300 text-xs font-medium text-center">
+                            🚧 This project is currently under active
+                            development
+                          </p>
+                        </div>
+                      )}
 
                       {/* Flip back indicator */}
                       <div className="text-center text-slate-500 text-sm font-medium mt-4">
